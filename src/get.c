@@ -134,7 +134,10 @@ __new_butter_get_request(
 }
 
 void *
-new_butter_get_request(void * db, void * key, uint32_t key_len, void * value_ptr, uint32_t * value_len)	{
+new_butter_get_request(void * db
+		, void * key, uint32_t key_len
+		, void * value_ptr, uint32_t * value_len)
+{
 	butter_req_t * req;
 	int r;
 
@@ -188,7 +191,9 @@ butter_get(void * db, void * key, uint32_t key_len, void * value, uint32_t *valu
 }
 
 STATIC int
-__new_butter_get_request2(void * db, void * key, uint32_t key_len, butter_req_t ** req_ptr)	{
+__new_butter_get_request2(void * db
+		, void * key, uint32_t key_len, butter_req_t ** req_ptr)
+{
 	butter_req_t * req;
 
 	if (!db)	{
@@ -274,7 +279,9 @@ butter_get_value_from_req(void * req_ptr, void ** value_ptr, uint32_t * value_le
 
 /* butter lib provices buffer */
 int
-butter_get2(void * db, void * key, uint32_t key_len, void ** value_ptr, uint32_t * value_len)	{
+butter_get2(void * db
+		, void * key, uint32_t key_len, void ** value_ptr, uint32_t * value_len)
+{
 	butter_req_t * req;
 	int r;
 
@@ -284,7 +291,8 @@ butter_get2(void * db, void * key, uint32_t key_len, void ** value_ptr, uint32_t
 	}
 
 	if (!value_ptr || !value_len)	{
-		printf("ERROR: %s: %s, return value pointer address not provided\n", MODULE_NAME, __func__);
+		printf("ERROR: %s: %s, return value pointer address not provided\n"
+				, MODULE_NAME, __func__);
 		return BDB_PARAM_ERROR;
 	}
 

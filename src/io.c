@@ -29,14 +29,18 @@ butter_io_chassis(butter_req_t * req)	{
 			req->io_handler_return_value = BDB_OK;
 		}
 		else	{
-			printf("ERROR: IO chassis %s(), %d: read() failed, fd = %d, r = %lu\n", __func__, __LINE__, req->db->fd, r);
-			printf("ERROR: IO chassis: read() failed, errno = %d (%s)\n", errno, strerror(errno));
+			printf("ERROR: IO chassis %s(), %d: read() failed, fd = %d, r = %lu\n"
+					, __func__, __LINE__, req->db->fd, r);
+			printf("ERROR: IO chassis: read() failed, errno = %d (%s)\n"
+					, errno, strerror(errno));
 			req->io_type = BDB_IO_DONE;
 			req->io_handler_return_value = BDB_IO_ERROR;
 		}
 		break;
 	case BDB_IO_WRITE:
-		if (req->io_request_size == (uint64_t)write(req->db->fd, req->io_request_buffer, req->io_request_size))	{
+		if (req->io_request_size ==
+				(uint64_t)write(req->db->fd, req->io_request_buffer, req->io_request_size))
+		{
 			req->io_type = BDB_IO_DONE;
 			req->io_handler_return_value = BDB_OK;
 		}
@@ -47,13 +51,13 @@ butter_io_chassis(butter_req_t * req)	{
 		}
 		break;
 	case BDB_IO_SEEK:
-		if (req->io_request_location == (uint64_t)lseek(req->db->fd, req->io_request_location, SEEK_SET))	{
-			// printf("DBG: IO chassis: lseek() success to %zd (0x%zx)\n", req->io_request_location, req->io_request_location);
+		if (req->io_request_location ==
+				(uint64_t)lseek(req->db->fd, req->io_request_location, SEEK_SET))	{
 			req->io_type = BDB_IO_DONE;
 			req->io_handler_return_value = BDB_OK;
 		}
 		else	{
-			printf("ERROR: IO chassis %s(), %d: lseek() failed, io_request_location = %zd\n"
+			printf("ERROR: IO chassis %s(), %d: lseek() failed, location = %zd\n"
 					, __func__, __LINE__
 					, req->io_request_location
 					);
@@ -68,7 +72,8 @@ butter_io_chassis(butter_req_t * req)	{
 			req->io_request_size = (uint64_t)off;
 			req->io_type = BDB_IO_DONE;
 			if (-1 == off)	{
-				printf("ERROR: IO chassis %s(), %d: lseek() failed, failed to get file size\n", __func__, __LINE__);
+				printf("ERROR: IO chassis %s(), %d: lseek() failed to get file size\n"
+						, __func__, __LINE__);
 				req->io_handler_return_value = BDB_IO_ERROR;
 			}
 			else	{

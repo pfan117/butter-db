@@ -52,11 +52,11 @@ butter_print_lookup_ctx(butter_req_t * req)	{
 }
 
 /* return values: */
-/* BDB_OK:          means find the k/v */
-/* BDB_NOT_FOUND:   means this is a new k/v, no brother k/v, k/v ptr location has been recorded */
-/* BDB_PT_IO_REQ:   means a new i/o request has been filled */
+/* BDB_OK:          find the k/v */
+/* BDB_NOT_FOUND:   k/v not found */
+/* BDB_PT_IO_REQ:   i/o request */
 /* BDB_PARAM_ERROR: internal error */
-/* BDB_DATA_ERROR:  read invalid data from disk */
+/* BDB_DATA_ERROR:  invalid data from disk */
 /* BDB_IO_ERROR:    i/o error */
 /* BDB_NO_MEMORY:   out of memory */
 int

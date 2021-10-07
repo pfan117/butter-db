@@ -41,7 +41,10 @@ butter_pt_create_place_holder(butter_req_t * req)	{
 	req->io_request_size = sizeof(ctx->blk);
 	yield_to_io_and_check_result(BDB_IO_WRITE);
 
-	for (ctx->offset = sizeof(ctx->blk); req->hash_bar_starts[0] - ctx->offset > WRITE_MAX; ctx->offset += WRITE_MAX)	{
+	for (ctx->offset = sizeof(ctx->blk);
+			req->hash_bar_starts[0] - ctx->offset > WRITE_MAX;
+			ctx->offset += WRITE_MAX)
+	{
 		PT_SET;
 		/* fill new place holder blk */
 		req->io_request_buffer = butter_place_holder_write_buf;
