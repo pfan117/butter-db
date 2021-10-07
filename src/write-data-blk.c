@@ -49,12 +49,12 @@ butter_pt_write_new_data_blk(butter_req_t * req)	{
 	CLEAN_CTX(alloc_ctx);
 
 	if (ctx->need_create_ex_list)	{
-		// printf("DBG: %s(), %d: write a data_ex_blk\n", __func__, __LINE__);
+		/* write a data_ex_blk */
 		req->alloc_ctx.request_length
 				= sizeof(butter_data_ex_blk) + req->key_len + req->value_len;
 	}
 	else	{
-		// printf("DBG: %s(), %d: write a data_blk\n", __func__, __LINE__);
+		/* write a data_blk */
 		req->alloc_ctx.request_length
 				= sizeof(butter_data_blk) + req->key_len + req->value_len;
 	}
@@ -62,13 +62,6 @@ butter_pt_write_new_data_blk(butter_req_t * req)	{
 	PT_SET
 	r = butter_alloc_space(req);
 	check_sub_pt_result
-
-	#if 0
-	printf("DBG: ==== %s(): alloc ctx info begin =====\n", __func__);
-	printf("    alloc_ctx.start = %lu\n", req->alloc_ctx.start);
-	printf("    alloc_ctx.length = %u\n", req->alloc_ctx.length);
-	printf("DBG: ==== %s(): alloc ctx info end =====\n", __func__);
-	#endif
 
 	/* seek */
 	req->io_request_location = req->alloc_ctx.start;

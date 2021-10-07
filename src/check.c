@@ -59,13 +59,10 @@ butter_check_size(int fd)	{
 		return BDB_DATA_ERROR;
 	}
 	else if (0 == r)	{
-		//printf("INFO: file size is %ld\n", r);
 		db_file_size = r;
 	}
 	else if (r >= (off_t)sizeof(butter_info_blk))	{
-		//printf("INFO: file size is %ld\n", l);
 		db_file_size = r;
-		// printf("DBG: db_file_size = %lu, info blk size is %lu\n", db_file_size, sizeof(butter_info_blk));
 	}
 	else	{
 		printf("ERROR: file size too small to be valid\n");
@@ -332,8 +329,6 @@ butter_check_data_blk(int fd)	{
 	}
 
 	/* jump to the next block */
-	// printf("DBG: %s() %d: lseek to %zd\n", __func__, __LINE__, db_file_offset + blk.blk_length);
-
 	seekr = lseek(fd, db_file_offset + blk.blk_length, SEEK_SET);
 	if ((db_file_offset + blk.blk_length) == seekr)	{
 		db_file_offset += blk.blk_length;
@@ -416,8 +411,6 @@ butter_check_data_ex_blk(int fd)	{
 	}
 
 	/* jump to the next block */
-	// printf("DBG: %s() %d: lseek to %zd\n", __func__, __LINE__, db_file_offset + blk.blk_length);
-
 	seekr = lseek(fd, db_file_offset + blk.blk_length, SEEK_SET);
 	if ((db_file_offset + blk.blk_length) == seekr)	{
 		db_file_offset += blk.blk_length;
@@ -512,10 +505,6 @@ butter_check_tlv(int fd)	{
 	place_holder_blk_cnt = 0;
 
 	for (;;)	{
-
-		// off_t seekr;
-		// seekr = lseek(fd, 0, SEEK_CUR);
-		// printf("DBG: %s() %d: read magic from offset %zd\n", __func__, __LINE__, seekr);
 
 		r = read(fd, &magic, sizeof(magic));
 		if (0 == r)	{
@@ -627,8 +616,6 @@ butter_file_check(char * filename, int flags)	{
 	}
 
 	close(fd);
-
-	/* printf("INFO: %s %d: ok\n", __func__, __LINE__); */
 
 	butter_print_counters();
 

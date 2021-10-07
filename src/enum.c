@@ -110,8 +110,7 @@ __load_item:
 			return BDB_DATA_ERROR;
 		}
 
-		/* change read location for the next item */
-
+		/* jump to the next item */
 		if (enum_ctx->enum_loaded_hash_depth > HASH_LENGTH)	{
 			/* change read location, hash bar level too deep */
 			printf("ERROR: %s() %d: not supposed to be here\n", __func__, __LINE__);

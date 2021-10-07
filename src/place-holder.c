@@ -28,33 +28,32 @@ butter_pt_create_place_holder(butter_req_t * req)	{
 	r = butter_alloc_space(req);
 	check_sub_pt_result
 
-	//printf("DBG: %s() %d: write new place holder blk to disk\n", __func__, __LINE__);
+	/* write new place holder blk to disk */
 	req->d_start = req->io_request_location = req->alloc_ctx.start;
-	//printf("DBG: %s() %d: seek to %ld (0x%lx)\n", __func__, __LINE__, req->io_request_location, req->io_request_location);
 	yield_to_io_and_check_result(BDB_IO_SEEK);
 
 	ctx->blk.magic = MAGIC_BLK_BDB_HOLDER;
 	ctx->blk.pad_0 = 0;
 	ctx->blk.length = req->hash_bar_starts[0];
 
-	//printf("DBG: %s() %d: write new place holder blk header\n", __func__, __LINE__);
+	/* write new place holder blk header */
 	req->io_request_buffer = &ctx->blk;
 	req->io_request_size = sizeof(ctx->blk);
 	yield_to_io_and_check_result(BDB_IO_WRITE);
 
 	for (ctx->offset = sizeof(ctx->blk); req->hash_bar_starts[0] - ctx->offset > WRITE_MAX; ctx->offset += WRITE_MAX)	{
 		PT_SET;
+		/* fill new place holder blk */
 		req->io_request_buffer = butter_place_holder_write_buf;
 		req->io_request_size = WRITE_MAX;
-		//printf("DBG: %s() %d: filling new place holder blk, size %ld\n", __func__, __LINE__, req->io_request_size);
 		yield_to_io_and_check_result(BDB_IO_WRITE);
 	}
 
 	if (req->hash_bar_starts[0] - ctx->offset > 0)	{
 		PT_SET;
+		/* fill new place holder blk tail */
 		req->io_request_buffer = butter_place_holder_write_buf;
 		req->io_request_size = req->hash_bar_starts[0] - ctx->offset;
-		//printf("DBG: %s() %d: filling new place holder blk tail, size %ld\n", __func__, __LINE__, req->io_request_size);
 		yield_to_io_and_check_result(BDB_IO_WRITE);
 	}
 

@@ -38,8 +38,6 @@ butter_pt_del(void * req_ptr)	{
 		return req->pt_return_value;
 	}
 
-	/* butter_print_lookup_ctx(req); */
-
 	if (req->d_prev_start)	{
 		printf("DBG: %s() %d: no hash bar structure change, adjust data blk link list\n"
 				, __func__, __LINE__);

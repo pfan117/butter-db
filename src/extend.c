@@ -25,9 +25,6 @@ butter_pt_extend(butter_req_t * req)	{
 		ctx->hash_idx = req->hash_branch_depth - 1;
 		ctx->hash_bar_jump_item_cnt = req->hash_bar_item_cnts[ctx->hash_idx];
 
-		// printf("DBG: %s() %d: current jump item cnt is %d\n"
-		// 		, __func__, __LINE__, ctx->hash_bar_jump_item_cnt);
-
 		if ((ctx->hash_bar_jump_item_cnt + 1 > SLOTS_PRE_LEVEL)
 				|| (ctx->hash_bar_jump_item_cnt + 1 < ctx->hash_bar_jump_item_cnt))
 		{
@@ -38,8 +35,7 @@ butter_pt_extend(butter_req_t * req)	{
 
 		ctx->hash_bar_jump_item_cnt ++;
 
-		// printf("DBG: %s() %d: hash bar jump item cnt increase to %d\n"
-		// 		, __func__, __LINE__, ctx->hash_bar_jump_item_cnt);
+		/* increase hash bar jump item cnt */
 		req->io_request_location
 				= HASH_BAR_CNT_LOCATION(req->hash_bar_starts[ctx->hash_idx]);
 		yield_to_io_and_check_result(BDB_IO_SEEK);
@@ -47,8 +43,7 @@ butter_pt_extend(butter_req_t * req)	{
 		req->io_request_size = sizeof(ctx->hash_bar_jump_item_cnt);
 		yield_to_io_and_check_result(BDB_IO_WRITE);
 
-		// printf("DBG: %s() %d: write new bar start location 0x%lx into hash bar\n"
-		// 		, __func__, __LINE__, req->set_ctx.new_data_blk_start);
+		/* write new bar start location into hash bar */
 		req->io_request_location = HASH_BAR_JUMP_ITEM_LOCATION2(ctx->hash_idx);
 		yield_to_io_and_check_result(BDB_IO_SEEK);
 		req->io_request_buffer = &req->set_ctx.new_data_blk_start;
@@ -78,16 +73,7 @@ butter_pt_extend(butter_req_t * req)	{
 
 __extend_hash_bar:
 
-	#if 0
-	printf("DBG: %s() %d: tree extend\n", __func__, __LINE__);
-	printf("DBG: hash value of new item:\n");
-	DUMP_HEX(req->hash, HASH_LENGTH);
-	printf("DBG: hash value of exist item:\n");
-	DUMP_HEX(req->set_ctx.exist_key_hash, HASH_LENGTH);
-	#endif
-
 	/* extend */
-
 	for (i = 0; i < HASH_LENGTH; i ++)	{
 		if (req->hash[i] == req->set_ctx.exist_key_hash[i])	{
 			continue;

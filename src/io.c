@@ -25,8 +25,6 @@ butter_io_chassis(butter_req_t * req)	{
 	case BDB_IO_READ:
 		r = (uint64_t)read(req->db->fd, req->io_request_buffer, req->io_request_size);
 		if (req->io_request_size == r)	{
-			// printf("DBG: IO chassis: read() %lu bytes success\n", req->io_request_size);
-			// butter_hex_dump(req->io_request_buffer, req->io_request_size);
 			req->io_type = BDB_IO_DONE;
 			req->io_handler_return_value = BDB_OK;
 		}
@@ -39,8 +37,6 @@ butter_io_chassis(butter_req_t * req)	{
 		break;
 	case BDB_IO_WRITE:
 		if (req->io_request_size == (uint64_t)write(req->db->fd, req->io_request_buffer, req->io_request_size))	{
-			// printf("DBG: IO chassis: write() %lu bytes success\n", req->io_request_size);
-			// butter_hex_dump(req->io_request_buffer, req->io_request_size);
 			req->io_type = BDB_IO_DONE;
 			req->io_handler_return_value = BDB_OK;
 		}
@@ -76,7 +72,6 @@ butter_io_chassis(butter_req_t * req)	{
 				req->io_handler_return_value = BDB_IO_ERROR;
 			}
 			else	{
-				/* printf("DBG: IO chassis: lseek() success for getting file size (is %ld bytes)\n", req->io_request_size); */
 				req->io_handler_return_value = BDB_OK;
 			}
 		}
@@ -87,11 +82,9 @@ butter_io_chassis(butter_req_t * req)	{
 			r = ftruncate(req->db->fd, req->io_request_size);
 			req->io_type = BDB_IO_DONE;
 			if (r)	{
-				/* printf("DBG: IO chassis: ftruncate() failed, errno = %d (%s)\n", errno, strerror(errno)); */
 				req->io_handler_return_value = BDB_IO_ERROR;
 			}
 			else	{
-				/* printf("DBG: IO chassis: ftruncate() success\n"); */
 				req->io_handler_return_value = BDB_OK;
 			}
 		}

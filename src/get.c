@@ -39,8 +39,6 @@ butter_pt_get(void * req_ptr)	{	/* PT task */
 		return req->pt_return_value;
 	}
 
-	/* butter_print_lookup_ctx(&req->lookup_ctx); */
-
 	req->io_request_size = req->d_value_length;
 
 	if (req->io_request_size < 0)	{

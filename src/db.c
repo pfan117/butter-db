@@ -53,7 +53,6 @@ butter_fill_new_di(butter_t * p)	{
 
 	r = write(p->fd, &p->info_blk, sizeof(p->info_blk));
 	if (sizeof(p->info_blk) == r)	{
-		// printf("DBG: write new db info block (%ld bytes) info success\n", sizeof(p->info_blk));
 		return BDB_OK;
 	}
 	else	{
