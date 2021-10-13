@@ -29,6 +29,7 @@ butter_load_spare_chain(butter_t * db)	{
 	int r;
 
 	for (l = db->info_blk.spare_chain; l; l = blk.next)	{
+
 		spare = Malloc(sizeof(butter_spare_t));
 		if (!spare)	{
 			return BDB_NO_MEMORY;
@@ -36,7 +37,7 @@ butter_load_spare_chain(butter_t * db)	{
 
 		/* TODO check the range of l */
 
-		sr = lseek(db->fd, SEEK_SET, l);
+		sr = lseek(db->fd, l, SEEK_SET);
 		if (l == sr)	{
 			;
 		}
