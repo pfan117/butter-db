@@ -97,7 +97,7 @@ main(int argc, char ** argv)	{
 		return -1;
 	}
 
-	#if defined DEBUG_MODE
+	#if defined TEST_MODE
 	if (execute_mt)	{
 		if (tc)	{
 			int tc_idx;

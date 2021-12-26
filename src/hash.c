@@ -6,7 +6,7 @@
 #include "public.h"
 #include "include/internal.h"
 
-#if defined DEBUG_MODE
+#if defined TEST_MODE
 
 static int butter_hash_mode = HASH_MODE_SALT;
 
@@ -46,7 +46,7 @@ butter_calculate_hash(
 		, char * key, uint32_t key_len, unsigned char * buf)
 {
 
-#if defined DEBUG_MODE
+#if defined TEST_MODE
 	if (HASH_MODE_HASH_ONLY == butter_hash_mode)	{
 		SHA256((const unsigned char*)key, key_len, buf);
 		return;

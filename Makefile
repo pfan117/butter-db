@@ -29,26 +29,23 @@ DATAPATHOPT :=
 endif
 
 ifdef debug_mode
-PREFIX ?= "${HOME}/local-gcc-memcheck/"
-CFLAGS += -g3 -fsanitize=address -fno-omit-frame-pointer -DSTATIC=
-LDFLAGS := -L${PREFIX}/lib
 LDFLAGS += -lasan -fsanitize=address
-CFLAGS += -fprofile-arcs -ftest-coverage
-LDFLAGS += -fprofile-arcs -ftest-coverage -lgcov
+CFLAGS += -g3 -fsanitize=address -fno-omit-frame-pointer -DSTATIC=
 else
-PREFIX ?= ${HOME}/local
+ifdef test_mode
+LDFLAGS += -lasan -fsanitize=address
+LDFLAGS += -fprofile-arcs -ftest-coverage -lgcov
+CFLAGS += -g3 -fsanitize=address -fno-omit-frame-pointer -DSTATIC=
+CFLAGS += -fprofile-arcs -ftest-coverage
+CFLAGS += -DTEST_MODE=1
+else
 CFLAGS += -O2 -DSTATIC=static
-LDFLAGS := -L${PREFIX}/lib
 endif
-
-ifdef debug_mode
-CFLAGS += -DDEBUG_MODE=1
 endif
 
 LDFLAGS += -lpthread -lssl -lcrypto
 
-#GCC ?= clang
-GCC ?= gcc
+GCC ?= clang
 
 CCINCLUDES := -I$(PROJDIR)
 
@@ -76,19 +73,6 @@ clean: force
 	@rm -f __depend__ tags
 	@rm -f test-case-list.h
 	@rm -f $(target) $(exe_target) a.out
-
-install: $(target) $(exe_target)
-	mkdir -p $(PREFIX)/lib/
-	mkdir -p $(PREFIX)/bin/
-	mkdir -p $(PREFIX)/include/
-	cp -f $(target) $(PREFIX)/lib/
-	cp -f $(exe_target) $(PREFIX)/bin/
-	cp -f public.h $(PREFIX)/include/butter.h
-
-uninstall: force
-	rm -f $(PREFIX)/lib/$(target)
-	rm -f $(PREFIX)/bin/$(exe_target)
-	rm -f $(PREFIX)/include/butter.h
 
 test: a.out
 

@@ -13,7 +13,7 @@ else
 	tst/create-tc-list.sh
 fi
 
-make GCC=gcc debug_mode=1 TMPDATAPATH=${TMPDATAPATH} test || exit 1
+make GCC=gcc test_mode=1 TMPDATAPATH=${TMPDATAPATH} test || exit 1
 
 ctags -R *
 

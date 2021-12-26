@@ -37,7 +37,7 @@ butter_test_start(int tc_idx)	{
 	int ccnt = 0;
 	int ecnt = 0;
 
-	#if defined DEBUG_MODE && 0
+	#if defined TEST_MODE && 0
 	printf("DBG: sizeof(butter_info_blk) = %lu\n", sizeof(butter_info_blk));
 	printf("DBG: sizeof(butter_spare_blk) = %lu\n", sizeof(butter_spare_blk));
 	printf("DBG: sizeof(butter_hash_bar_blk) = %lu\n", sizeof(butter_hash_bar_blk));

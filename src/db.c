@@ -6,6 +6,7 @@
 #include <string.h>	/* bzero */
 #include <stdlib.h>	/* malloc */
 #include <sys/time.h> /* gettimeofday */
+#include <sys/stat.h> /* stat */
 
 #include "public.h"
 #include "include/internal.h"
@@ -42,7 +43,8 @@ butter_fill_new_di(butter_t * p)	{
 
 	r = gettimeofday(&tv, NULL);
 	if (r)	{
-		printf("ERROR: %s, %s, %d: gettimeofday() error\n", MODULE_NAME, __func__, __LINE__);
+		printf("ERROR: %s, %s, %d: gettimeofday() error\n"
+				, MODULE_NAME, __func__, __LINE__);
 		bzero(&tv, sizeof(tv));
 	}
 
@@ -91,12 +93,29 @@ butter_db_load(butter_t * p)	{
 
 STATIC int
 butter_db_open(butter_t * p, char * filename)	{
-
+	struct stat st;
 	int fd;
 	int r;
 
-	fd = open(filename, O_RDWR | O_CREAT, (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
+	fd = open(filename, O_RDWR | O_CREAT
+			, (S_IRUSR | S_IWUSR | S_IRGRP | S_IWGRP | S_IROTH));
 	if (-1 == fd)	{
+		return BDB_FILE_OPEN_ERROR;
+	}
+
+	r = fstat(fd, &st);
+	if (r < 0)	{
+		close(fd);
+		printf("ERROR: %s() %d: failed to fstat()\n", __func__, __LINE__);
+		return BDB_FILE_OPEN_ERROR;
+	}
+
+	if (S_ISREG(st.st_mode))	{
+		;
+	}
+	else	{
+		close(fd);
+		printf("ERROR: %s() %d: not a block file\n", __func__, __LINE__);
 		return BDB_FILE_OPEN_ERROR;
 	}
 

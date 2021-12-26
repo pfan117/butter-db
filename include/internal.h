@@ -76,7 +76,7 @@ extern void butter_hex_dump(const char * b, int l);
 		, __func__, __LINE__, __V__)
 extern void butter_print_lookup_ctx(butter_req_t *);
 
-#if defined DEBUG_MODE
+#if defined TEST_MODE
 
 #define HASH_MODE_HASH_ONLY	0
 #define HASH_MODE_SALT		1
@@ -85,7 +85,7 @@ extern void butter_print_lookup_ctx(butter_req_t *);
 extern void butter_hash_mode_select(int);
 extern int butter_test_start(int tc_idx);
 
-#endif	/* DEBUG_MODE */
+#endif	/* TEST_MODE */
 
 extern int butter_check_counters(
 		int spare

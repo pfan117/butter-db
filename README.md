@@ -1,6 +1,6 @@
 # Butter DB
 
-+ Butter-db store K-V in hash tree
++ Butter-db store K-V in a 256-way search tree. No rebalance operations, the tree is naturally balanced with the help of the uniform distribution of SHA512 values, hope so.
 
 ### Primary Methords
 set, get, delete, enum, gc, fix
